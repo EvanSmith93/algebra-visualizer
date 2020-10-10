@@ -8,10 +8,9 @@ If I have time: Type in your own equation.
 */
 
 function setup() {
-  createCanvas(800, 400);
+  createCanvas(600, 300);
   noStroke();
   textAlign(CENTER, CENTER);
-  //rectAlign(CENTER, CENTER);
 }
 
 const Tips = {
@@ -86,6 +85,8 @@ class ScaleSide {
 				text("-1", pos.x, pos.y);
 			}
 		}
+
+		rect(xPos - 20, yPos + 25, 200, 4, 2);
 	}
 }
 
@@ -104,10 +105,6 @@ class Scale {
 	}
 
 	draw() {
-		
-		//fill(65, 42, 42);
-		//rect(this.x - 10, this.y, 20, 200, 5);
-		//rect(this.x - 30, this.y + 190, 60, 20, 5);
 
 		// circle
 		fill(240, 240, 240);
@@ -133,15 +130,65 @@ class Scale {
 		this.leftHalf.draw(this.x - 230, this.y + 20);
 		this.rightHalf.draw(this.x + 65, this.y + 20);
 	}
+
+	addX(num) {
+		this.leftHalf.x += num;
+		this.rightHalf.x += num;
+	}
+
+	addConst(num) {
+		this.leftHalf.constant += num;
+		this.rightHalf.constant += num;
+	}
+
+	divideXs() {
+		if (this.leftHalf.x == 0 && this.rightHalf.constant == 0) {
+
+			const divideBy = abs(this.rightHalf.x);
+			this.leftHalf.constant /= divideBy;
+			this.rightHalf.x /= divideBy;
+			return true;
+
+		} else if (this.leftHalf.constant == 0 && this.rightHalf.x == 0) {
+
+			const divideBy = abs(this.leftHalf.x);
+			this.leftHalf.x /= divideBy;
+			this.rightHalf.constant /= divideBy;
+			return true;
+
+		} else {
+			return false;
+		}
+	}
+
 }
 
-var scale = new Scale(400, 200);
+var myScale = new Scale(300, 200);
 
-doctument.getElementByID('addXButton').onclick = function() {
-	
+// buttons
+document.getElementById('addXButton').onclick = function() {
+	myScale.addX(1);
+}
+
+document.getElementById('subXButton').onclick = function() {
+	myScale.addX(-1);
+}
+
+document.getElementById('addNumButton').onclick = function() {
+	myScale.addConst(1);
+}
+
+document.getElementById('subNumButton').onclick = function() {
+	myScale.addConst(-1);
+}
+
+document.getElementById('divide').onclick = function() {
+	if (!myScale.divideXs()) {
+		alert("Put all Xs on one side, and 1s on the other side before dividing.")
+	}
 }
 
 function draw() {
 	background(220);
-	scale.draw();
+	myScale.draw();
 }

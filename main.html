@@ -3,15 +3,49 @@
 <head>
 	<title>Algebra Visualizer</title>
 	<script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
-	<script src="main.js"></script>
+	
+	<style>
+		button {
+		  border: none;
+		  color: white;
+		  padding: 10px 20px;
+		  text-align: center;
+		  text-decoration: none;
+		  display: inline-block;
+		  font-size: 18px;
+		  margin: 4px 2px;
+		  cursor: pointer;
+		}
+
+		span {
+			margin: 8px;
+		}
+
+		#subXButton { background-color: #00FF00; }
+		#addXButton { background-color: #00FF00; }
+
+		#subNumButton { background-color: #0000FF; }
+		#addNumButton { background-color: #0000FF; }
+</style>
+</style>
 </head>
 <body>
 	<h1>Algebra Visualizer</h1>
-	
-	<button type="button" id="addNumButton">+1</button>
-	<button type="button" id="subNumButton">-1</button>
 
-	<button type="button" id="addXButton">+1 X</button>
-	<button type="button" id="subXButton">-1 X</button>
+	<span>
+		<button type="button" id="subXButton">-X</button>
+		<button type="button" id="addXButton">+X</button>
+	</span>
+
+	<span>
+		<button type="button" id="subNumButton">-1</button>
+		<button type="button" id="addNumButton">+1</button>
+	</span>
+
+	<span>
+		<button type="button" id="divide">/</button>
+	</span>
+
+	<script src="main.js"></script>
 </body>
 </html>
