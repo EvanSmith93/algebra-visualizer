@@ -3,6 +3,7 @@
 <head>
 	<title>Algebra Visualizer</title>
 	<script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 	
 	<style>
 		button {
@@ -13,7 +14,7 @@
 		  text-decoration: none;
 		  display: inline-block;
 		  font-size: 18px;
-		  margin: 4px 2px;
+		  margin-bottom: 10px;
 		  cursor: pointer;
 		}
 
@@ -21,11 +22,14 @@
 			margin: 8px;
 		}
 
+		#subYButton { background-color: #FF0000; }
+		#addYButton { background-color: #FF0000; }
+
 		#subXButton { background-color: #00FF00; }
 		#addXButton { background-color: #00FF00; }
 
-		#subNumButton { background-color: #0000FF; }
-		#addNumButton { background-color: #0000FF; }
+		#subConstButton { background-color: #0000FF; }
+		#addConstButton { background-color: #0000FF; }
 </style>
 </style>
 </head>
@@ -33,18 +37,27 @@
 	<h1>Algebra Visualizer</h1>
 
 	<span>
+		<button type="button" id="subYButton">-Y</button>
+		<button type="button" id="addYButton">+Y</button>
+	</span>
+
+	<span>
 		<button type="button" id="subXButton">-X</button>
 		<button type="button" id="addXButton">+X</button>
 	</span>
 
 	<span>
-		<button type="button" id="subNumButton">-1</button>
-		<button type="button" id="addNumButton">+1</button>
+		<button type="button" id="subConstButton">-1</button>
+		<button type="button" id="addConstButton">+1</button>
 	</span>
 
 	<span>
 		<button type="button" id="divide">/</button>
 	</span>
+
+	<div id="mainWindow"></div>
+
+	<div id="graph" style="width: 400px; height: 300px;"></div>
 
 	<script src="main.js"></script>
 </body>
