@@ -5,10 +5,6 @@ class ScaleSide {
 		this.constant = constant;
 	}
 
-	/*sumUp(xValue) {
-		return (this.x * xValue) + this.constant;
-	}*/
-
 	writeOut() {
 		const yStr = this.y + "y ";
 		const xStr = ((this.x >= 0) ? "+ " : "- ") + roundTo(abs(this.x), 2) + "x ";
@@ -39,21 +35,6 @@ class Scale {
 
 		console.log(makeScaleData());
 		this.setBlocks(makeScaleData());
-
-		//this.xValue = 2;
-		//this.tipsTo = this.leftHalf.sumUp(this.xValue) > this.rightHalf.sumUp(this.xValue) ? Tips.left : this.leftHalf.sumUp(this.xValue) == this.rightHalf.sumUp(this.xValue) ? Tips.center : Tips.right;
-	}
-
-	getSign() {
-		/*switch (this.tipsTo) {
-			case Tips.center:
-				return "=";
-			case Tips.left:
-				return ">";
-			case Tips.right:
-				return "<";
-			}*/
-		return "=";
 	}
 
 	draw() {
@@ -65,7 +46,7 @@ class Scale {
 		// >, <, or = sign
 		fill(0, 0, 0);
 		textSize(40);
-		text(this.getSign(), this.x, this.y);
+		text("=", this.x, this.y);
 
 		// left and right sides
 		this.leftHalf.draw(this.x - 330, this.y + 20);
@@ -77,7 +58,7 @@ class Scale {
 	}
 
 	writeOut() {
-		return this.leftHalf.writeOut() + "  " + this.getSign() + "  " + this.rightHalf.writeOut();
+		return this.leftHalf.writeOut() + "  " + "=" + "  " + this.rightHalf.writeOut();
 	}
 
 	setBlocks(data) {

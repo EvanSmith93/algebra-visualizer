@@ -32,5 +32,3 @@ var createGraph = function(m, b) {
   
   graph = Plotly.newPlot(document.getElementById("graph"), line, layout, {staticPlot: true});
 }
-
-//createGraph(1/3, -2);
