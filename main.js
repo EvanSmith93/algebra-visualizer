@@ -1,35 +1,3 @@
-/*
-Tipable scale with greater than, less than, or equal sign.
-Add X blocks and 1 blocks to tip the scale. Ballons are used for negative numbers.
-Complete 'isolate the x' challenges.
-
-If I have time: Type in your own equation.
-
-*/
-
-var trace = {
-  x: [-1, 5],
-  y: [-1, 8],
-  type: 'scatter',
-  mode: 'lines',
-  line: {
-  	color: 'rgb(240, 240, 240)',
-  	width: 5
-  }
-};
-
-var data = [trace];
-var layout = {
-	showlegend: false,
-	width: 650,
-	height: 400,
-	font: { color: "#000000" },
-	paper_bgcolor: '#aaaaaa',
-	plot_bgcolor: '#aaaaaa',
-}
-
-Plotly.newPlot(document.getElementById("graph"), data, layout, {staticPlot: true});
-
 function setup() {
   var canvas = createCanvas(750, 320);
   canvas.parent("mainWindow");
@@ -38,11 +6,28 @@ function setup() {
   textAlign(CENTER, CENTER);
 }
 
-/*const Tips = {
-	left: "left",
-	right: "right",
-	center: "center"
-};*/
+// I did not write this function myself. Sorce link: https://stackoverflow.com/questions/15762768/javascript-math-round-to-two-decimal-places
+function roundTo(n, digits) {
+    var negative = false;
+    if (digits === undefined) {
+        digits = 0;
+    }
+    if (n < 0) {
+        negative = true;
+        n = n * -1;
+    }
+    var multiplicator = Math.pow(10, digits);
+    n = parseFloat((n * multiplicator).toFixed(11));
+    n = (Math.round(n) / multiplicator).toFixed(digits);
+    if (negative) {
+        n = (n * -1).toFixed(digits);
+    }
+    return n;
+}
+
+var randRange = function(min, max) {
+	return Math.random() * (max - min) + min;
+}
 
 var blockStack = function(xPos, yPos, amount, symbol, color) {
 	if (amount >= 0) {
@@ -51,6 +36,7 @@ var blockStack = function(xPos, yPos, amount, symbol, color) {
 				const pos = { x: xPos + (30 * (i % 3)), y: yPos - (30 * floor(i / 3)) };
 
 				if (i == floor(amount) && amount % 1 != 0) {
+					// partial block
 					fill(255, 255, 255, 0);
 					stroke(color);
 					rect(pos.x - 13, pos.y - 13, 26, 26, 3);
@@ -60,6 +46,7 @@ var blockStack = function(xPos, yPos, amount, symbol, color) {
 					fill(color);
 					rect(pos.x - 13, pos.y - 13 + (26 * (1 - (amount % 1))), 26, 26 * (amount % 1), 3);
 				} else {
+					// full block
 					fill(color);
 					rect(pos.x - 14, pos.y - 14, 28, 28, 3);
 				}
@@ -78,6 +65,7 @@ var blockStack = function(xPos, yPos, amount, symbol, color) {
 				const pos = { x: xPos + (30 * (j % 3)), y: yPos - (30 * floor(j / 3)) };
 
 				if (i == floor(amount) + 1 && amount % 1 != 0) {
+					// partial block
 					fill(255, 255, 255, 0);
 					stroke(alpha);
 					rect(pos.x - 13, pos.y - 13, 26, 26, 3);
@@ -87,6 +75,7 @@ var blockStack = function(xPos, yPos, amount, symbol, color) {
 					fill(alpha);
 					rect(pos.x - 13, pos.y - 13 + (26 * (1 - (abs(amount) % 1))), 26, 26 * (abs(amount) % 1), 3);
 				} else {
+					// full block
 					fill(alpha);
 					rect(pos.x - 14, pos.y - 14, 28, 28, 3);
 				}
@@ -98,134 +87,24 @@ var blockStack = function(xPos, yPos, amount, symbol, color) {
 		}
 }
 
-class ScaleSide {
-	constructor(y, x, constant) {
-		this.y = y;
-		this.x = x;
-		this.constant = constant;
+var makeScaleData = function() {
+	const left = {
+		y: Math.floor(randRange(-6, 7)),
+		x: Math.floor(randRange(-6, 7)),
+		const: Math.floor(randRange(-6, 7))
 	}
 
-	//sumUp(xValue) {
-		//return (this.x * xValue) + this.constant;
-	//}
-
-	writeOut() {
-		const yStr = this.y + "y ";
-		const xStr = ((this.constant > 0) ? "+ " : "- ") + abs(this.x) + "x ";
-	 	const constStr = ((this.constant > 0) ? "+ " : "- ") + abs(this.constant);
-
-		return yStr + xStr + constStr;
-
-		/*if (this.constant > 0) {
-			return this.x + "X + " + this.constant;
-		} else if (this.constant == 0) {
-			return this.x + "X"
-		} else {
-			return this.x + "X - " + abs(this.constant);
-		}*/
+	var right = {
+		y: Math.floor(randRange(-6, 7)),
+		x: Math.floor(randRange(-6, 7)),
+		const: Math.floor(randRange(-6, 7))
 	}
 
-	draw(xPos, yPos) {
-		// stacks
-		blockStack(xPos, yPos, this.y, "Y", color(255, 0, 0));
-		blockStack(xPos + 100, yPos, this.x, "X", color(0, 255, 0));
-		blockStack(xPos + 200, yPos, this.constant, "1", color(0, 0, 255));
-
-		// bottom line
-		rect(xPos - 20, yPos + 25, 300, 4, 2);
-	}
-}
-
-
-class Scale {
-	constructor(x, y) {
-		this.x = x;
-		this.y = y;
-
-		this.leftHalf = new ScaleSide(5, 5, 7);
-		this.rightHalf = new ScaleSide(1, 2, 3);
-
-		//this.xValue = 2;
-
-		//this.tipsTo = this.leftHalf.sumUp(this.xValue) > this.rightHalf.sumUp(this.xValue) ? Tips.left : this.leftHalf.sumUp(this.xValue) == this.rightHalf.sumUp(this.xValue) ? Tips.center : Tips.right;
+	while (right.y == left.y) {
+		right.y = Math.floor(randRange(-6, 7));
 	}
 
-	getSign() {
-		/*switch (this.tipsTo) {
-			case Tips.center:
-				return "=";
-			case Tips.left:
-				return ">";
-			case Tips.right:
-				return "<";
-			}*/
-		return "=";
-	}
-
-	draw() {
-
-		// circle
-		fill(240, 240, 240);
-		ellipse(this.x, this.y, 60, 60);
-
-		// >, <, or = sign
-		fill(0, 0, 0);
-		textSize(40);
-		text(this.getSign(), this.x, this.y);
-
-		// left and right sides
-		this.leftHalf.draw(this.x - 330, this.y + 20);
-		this.rightHalf.draw(this.x + 65, this.y + 20);
-
-		// bottom equation
-		textSize(35);
-		text(this.writeOut(), this.x, this.y + 90);
-	}
-
-	writeOut() {
-		return this.leftHalf.writeOut() + "  " + this.getSign() + "  " + this.rightHalf.writeOut();
-	}
-
-	// adds 'num' of Y to both sides
-	addY(num) {
-		this.leftHalf.y += num;
-		this.rightHalf.y += num;
-	}
-
-	// adds 'num' of X to both sides
-	addX(num) {
-		this.leftHalf.x += num;
-		this.rightHalf.x += num;
-	}
-
-	// adds 'num' of  constant to both sides
-	addConst(num) {
-		this.leftHalf.constant += num;
-		this.rightHalf.constant += num;
-	}
-
-	divideYs() {
-		if (this.leftHalf.y == 0 && this.rightHalf.x == 0 && this.rightHalf.constant == 0) {
-
-			const divideBy = this.rightHalf.y;
-			this.rightHalf.y /= divideBy;
-			this.leftHalf.x /= divideBy;
-			this.leftHalf.constant /= divideBy;
-			return true;
-
-		} else if (this.rightHalf.y == 0 && this.leftHalf.x == 0 && this.leftHalf.constant == 0) {
-
-			const divideBy = abs(this.leftHalf.y);
-			this.leftHalf.y /= divideBy;
-			this.rightHalf.x /= divideBy;
-			this.rightHalf.constant /= divideBy;
-			return true;
-
-		} else {
-			return false;
-		}
-	}
-
+	return {leftHalf: left, rightHalf: right}
 }
 
 var myScale = new Scale(375, 170);
@@ -255,11 +134,18 @@ document.getElementById('subConstButton').onclick = function() {
 	myScale.addConst(-1);
 }
 
-document.getElementById('divide').onclick = function() {
+document.getElementById('divideButton').onclick = function() {
 	if (!myScale.divideYs()) {
 		alert("Put all Ys on one side, and put all Xs and 1s on the other side before dividing.")
 	}
 }
+
+document.getElementById('newProblemButton').onclick = function() {
+	myScale.setBlocks(makeScaleData());
+	myScale.graph();
+}
+
+myScale.graph();
 
 function draw() {
 	background(170);

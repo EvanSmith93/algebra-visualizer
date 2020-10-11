@@ -2,8 +2,13 @@
 <html>
 <head>
 	<title>Algebra Visualizer</title>
+
+	<!-- Source link to the plotly library: https://plotly.com/javascript/ -->
 	<script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+	
+	<!-- Source link to the p5js library: https://p5js.org -->
 	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
 	
 	<style>
 		button {
@@ -19,7 +24,36 @@
 		}
 
 		span {
-			margin: 8px;
+			margin: 4px;
+		}
+
+		li {
+			padding: 5px
+		}
+
+		#instructions {
+			font-family: sans-serif;
+			border-style: solid;
+			border-color: rgb(255, 253, 208);
+			border-width: 5px 5px;
+			max-width: 500px;
+			padding: 10px;
+			margin: 20px;
+			position: fixed;
+			top: 0;
+			right: 0;
+
+		}
+
+		#newProblemSpan {
+			margin: 34px;
+		}
+
+		#newProblemButton { 
+			background-color: rgb(230, 210, 20);
+			font-size: 20;
+			padding: 50px, 20px;
+			font-size: 20px;
 		}
 
 		#subYButton { background-color: #FF0000; }
@@ -30,11 +64,13 @@
 
 		#subConstButton { background-color: #0000FF; }
 		#addConstButton { background-color: #0000FF; }
+
 </style>
 </style>
 </head>
 <body>
-	<h1>Algebra Visualizer</h1>
+
+	
 
 	<span>
 		<button type="button" id="subYButton">-Y</button>
@@ -52,13 +88,32 @@
 	</span>
 
 	<span>
-		<button type="button" id="divide">/</button>
+		<button type="button" id="divideButton">Divide</button>
+	</span>
+
+	<span id="newProblemSpan">
+		<button type="button" id="newProblemButton">New Equation</button>
 	</span>
 
 	<div id="mainWindow"></div>
 
-	<div id="graph" style="width: 400px; height: 300px;"></div>
+	<div id="graph" style="width: 400px; height: 300px; padding-top: 25px"></div>
 
+
+	<div id="instructions">
+		<h2>Welcome to the interactive algebra visualizer!</h2>
+		<h3>This program can help you better understand how balancing equations and graphing lines works. Here's what you need to know.</h3>
+		<ol style="line-height: 21px">
+  			<li>The + and - buttons add and subtract items from both sides of the equation below. Use the buttons to move all Ys to one side of the equation, and move the Xs and 1s to the other side. Since we're doing the same operation to both sides of the equation, the sides will stay equal.</li>
+  			<li>After you've completed step 1, use the Divide button to divide both sides of the equation by the number of Ys. This will put the equation in what's known as <i>slope intersept form</i>.</li>
+  			<li>Take a look at the graph below. The line represents every possible x, y pair that could make the above equation true.</li>
+  			<li>Once you're done, click the New Equation button to try out another equation.</li>
+		</ol>
+	</div>
+
+	<script src="graph.js"></script>
+	<script src="scale.js"></script>
 	<script src="main.js"></script>
+	
 </body>
 </html>
